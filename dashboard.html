@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | SwiftPay</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .dashboard-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .nav-link:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+        .sidebar {
+            transition: all 0.3s;
+        }
+        .sidebar-collapsed {
+            width: 80px;
+        }
+        .sidebar-collapsed .nav-text {
+            display: none;
+        }
+        .content-expanded {
+            margin-left: 80px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar bg-white shadow-lg w-64 fixed h-full flex-shrink-0 z-10 transition-all duration-300">
+            <div class="p-5 border-b border-gray-200">
+                <div class="flex items-center">
+                    <i data-feather="dollar-sign" class="text-blue-500 mr-2"></i>
+                    <span class="text-xl font-bold">Swift<span class="gradient-text">Pay</span></span>
+                </div>
+            </div>
+            <div class="p-4">
+                <div class="flex items-center mb-6">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                        <i data-feather="user" class="text-blue-600"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium">John Doe</div>
+                        <div class="text-xs text-gray-500">Premium Member</div>
+                    </div>
+                </div>
+                <ul class="space-y-1">
+                    <li>
+                        <a href="#" class="nav-link flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                            <i data-feather="home" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="send.html" class="nav-link flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                            <i data-feather="send" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Send Money</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="receive.html" class="nav-link flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                            <i data-feather="dollar-sign" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Receive Money</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="invest.html" class="nav-link flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                            <i data-feather="trending-up" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Investments</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="transactions.html" class="nav-link flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                            <i data-feather="list" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Transactions</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="cards.html" class="nav-link flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                            <i data-feather="credit-card" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Cards</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html" class="nav-link flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                            <i data-feather="settings" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-200">
+                <button id="toggleSidebar" class="w-full flex items-center justify-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                    <i data-feather="chevron-left" class="w-5 h-5 mr-3 text-blue-600"></i>
+                    <span class="nav-text">Collapse</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="mainContent" class="flex-1 content-expanded transition-all duration-300">
+            <!-- Top Navigation -->
+            <nav class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800">Dashboard</h1>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <button id="notificationsBtn" class="text-gray-500 hover:text-gray-700 transition">
+                            <i data-feather="bell"></i>
+                            <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
+                        </button>
+                    </div>
+                    <div class="relative">
+                        <button id="userMenuBtn" class="flex items-center space-x-2">
+                            <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                                <i data-feather="user" class="text-blue-600 w-4 h-4"></i>
+                            </div>
+                            <span class="hidden md:inline text-gray-700">John Doe</span>
+                            <i data-feather="chevron-down" class="w-4 h-4 text-gray-500"></i>
+                        </button>
+                        <div id="userMenu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-10">
+                            <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                            <a href="settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Settings</a>
+                            <a href="login.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Dashboard Content -->
+            <main class="p-6">
+                <!-- Balance Overview -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                    <div class="dashboard-card bg-white p-6 rounded-xl shadow-sm transition">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-medium text-gray-500">Total Balance</h3>
+                            <i data-feather="eye" class="text-gray-400"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-800 mb-2">$12,489.50</div>
+                        <div class="text-green-500 flex items-center">
+                            <i data-feather="trending-up" class="w-4 h-4 mr-1"></i>
+                            <span class="text-sm">+8.2% from last month</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card bg-white p-6 rounded-xl shadow-sm transition">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-medium text-gray-500">Investments</h3>
+                            <i data-feather="pie-chart" class="text-gray-400"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-800 mb-2">$5,768.20</div>
+                        <div class="text-green-500 flex items-center">
+                            <i data-feather="trending-up" class="w-4 h-4 mr-1"></i>
+                            <span class="text-sm">+3.1% from last month</span>
+                        </div>
+                    </div>
+                    <div class="dashboard-card bg-white p-6 rounded-xl shadow-sm transition">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-lg font-medium text-gray-500">Recent Spending</h3>
+                            <i data-feather="shopping-bag" class="text-gray-400"></i>
+                        </div>
+                        <div class="text-3xl font-bold text-gray-800 mb-2">$1,245.75</div>
+                        <div class="text-red-500 flex items-center">
+                            <i data-feather="trending-down" class="w-4 h-4 mr-1"></i>
+                            <span class="text-sm">+12.7% from last month</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="mb-8">
+                    <h2 class="text-xl font-bold text-gray-800 mb-4">Quick Actions</h2>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <a href="send.html" class="bg-white hover:bg-gray-50 p-4 rounded-lg shadow-sm flex flex-col items-center justify-center transition">
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mb-3">
+                                <i data-feather="send" class="text-blue-600 w-5 h-5"></i>
+                            </div>
+                            <span class="text-sm font-medium text-gray-700">Send Money</span>
+                        </a>
+                        <a href="receive.html" class="bg-white hover:bg-gray-50 p-4 rounded-lg shadow-sm flex flex-col items-center justify-center transition">
+                            <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mb-3">
+                                <i data-feather="dollar-sign" class="text-green-600 w-5 h-5"></i>
+                            </div>
+                            <span class="text-sm font-medium text-gray-700">Request</span>
+                        </a>
+                        <a href="invest.html" class="bg-white hover:bg-gray-50 p-4 rounded-lg shadow-sm flex flex-col items-center justify-center transition">
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mb-3">
+                                <i data-feather="trending-up" class="text-purple-600 w-5 h-5"></i>
+                            </div>
+                            <span class="text-sm font-medium text-gray-700">Invest</span>
+                        </a>
+                        <a href="cards.html" class="bg-white hover:bg-gray-50 p-4 rounded-lg shadow-sm flex flex-col items-center justify-center transition">
+                            <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mb-3">
+                                <i data-feather="credit-card" class="text-yellow-600 w-5 h-5"></i>
+                            </div>
+                            <span class="text-sm font-medium text-gray-700">Cards</span>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Recent Transactions -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-bold text-gray-800">Recent Transactions</h2>
+                        <a href="transactions.html" class="text-blue-600 hover:text-blue-800 text-sm font-medium">View All</a>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Transaction</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center mr-3">
+                                                <i data-feather="dollar-sign" class="text-green-600 w-4 h-4"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">Payment from Sarah</div>
+                                                <div class="text-sm text-gray-500">Invoice #3245</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">+$450.00</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 15, 2023</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                                <i data-feather="shopping-bag" class="text-blue-600 w-4 h-4"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">Amazon Purchase</div>
+                                                <div class="text-sm text-gray-500">Order #5423</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">-$89.99</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 14, 2023</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-full bg-yellow-100 flex items-center justify-center mr-3">
+                                                <i data-feather="trending-up" class="text-yellow-600 w-4 h-4"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">Investment Deposit</div>
+                                                <div class="text-sm text-gray-500">Portfolio #243</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">+$1,000.00</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 13, 2023</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">Pending</span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-full bg-red-100 flex items-center justify-center mr-3">
+                                                <i data-feather="send" class="text-red-600 w-4 h-4"></i>
+                                            </div>
+                                            <div>
+                                                <div class="text-sm font-medium text-gray-900">Transfer to Mike</div>
+                                                <div class="text-sm text-gray-500">Payment #5432</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">-$250.00</td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">May 12, 2023</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">Completed</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Monthly Spending</h3>
+                        <canvas id="spendingChart" height="250"></canvas>
+                    </div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm">
+                        <h3 class="text-lg font-medium text-gray-900 mb-4">Investment Portfolio</h3>
+                        <canvas id="portfolioChart" height="250"></canvas>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Toggle sidebar
+        const sidebar = document.getElementById('sidebar');
+        const mainContent = document.getElementById('mainContent');
+        const toggleSidebarBtn = document.getElementById('toggleSidebar');
+        let sidebarCollapsed = false;
+
+        toggleSidebarBtn.addEventListener('click', () => {
+            sidebarCollapsed = !sidebarCollapsed;
+            if (sidebarCollapsed) {
+                sidebar.classList.add('sidebar-collapsed');
+                mainContent.classList.add('md:ml-20');
+                toggleSidebarBtn.innerHTML = '<i data-feather="chevron-right" class="w-5 h-5 text-blue-600"></i><span class="nav-text">Expand</span>';
+            } else {
+                sidebar.classList.remove('sidebar-collapsed');
+                mainContent.classList.remove('md:ml-20');
+                toggleSidebarBtn.innerHTML = '<i data-feather="chevron-left" class="w-5 h-5 text-blue-600"></i><span class="nav-text">Collapse</span>';
+            }
+            feather.replace();
+        });
+
+        // Toggle user menu
+        const userMenuBtn = document.getElementById('userMenuBtn');
+        const userMenu = document.getElementById('userMenu');
+        
+        userMenuBtn.addEventListener('click', () => {
+            userMenu.classList.toggle('hidden');
+        });
+
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!userMenuBtn.contains(e.target) && !userMenu.contains(e.target)) {
+                userMenu.classList.add('hidden');
+            }
+        });
+
+        // Charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Spending Chart
+            const spendingCtx = document.getElementById('spendingChart').getContext('2d');
+            const spendingChart = new Chart(spendingCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+                    datasets: [{
+                        label: 'Spending',
+                        data: [1200, 1900, 1500, 2400, 1800, 2100, 1700],
+                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                        borderColor: '#3b82f6',
+                        borderWidth: 2,
+                        tension: 0.3,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Portfolio Chart
+            const portfolioCtx = document.getElementById('portfolioChart').getContext('2d');
+            const portfolioChart = new Chart(portfolioCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Stocks', 'Bonds', 'Crypto', 'Real Estate'],
+                    datasets: [{
+                        data: [35, 25, 20, 20],
+                        backgroundColor: [
+                            '#3b82f6',
+                            '#8b5cf6',
+                            '#10b981',
+                            '#f59e0b'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'right'
+                        }
+                    },
+                    cutout: '70%'
+                }
+            });
+        });
+
+        // Initialize feather icons
+        feather.replace();
+        AOS.init();
+    </script>
+</body>
+</html>

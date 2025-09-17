@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Money | SwiftPay</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .sidebar {
+            transition: all 0.3s;
+        }
+        .sidebar-collapsed {
+            width: 80px;
+        }
+        .sidebar-collapsed .nav-text {
+            display: none;
+        }
+        .content-expanded {
+            margin-left: 80px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar" class="sidebar bg-white shadow-lg w-64 fixed h-full flex-shrink-0 z-10">
+            <div class="p-5 border-b border-gray-200">
+                <div class="flex items-center">
+                    <i data-feather="dollar-sign" class="text-blue-500 mr-2"></i>
+                    <span class="text-xl font-bold">Swift<span class="gradient-text">Pay</span></span>
+                </div>
+            </div>
+            <div class="p-4">
+                <div class="flex items-center mb-6">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                        <i data-feather="user" class="text-blue-600"></i>
+                    </div>
+                    <div>
+                        <div class="font-medium">John Doe</div>
+                        <div class="text-xs text-gray-500">Premium Member</div>
+                    </div>
+                </div>
+                <ul class="space-y-1">
+                    <li>
+                        <a href="dashboard.html" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                            <i data-feather="home" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="send.html" class="flex items-center p-3 text-blue-600 bg-blue-50 rounded-lg">
+                            <i data-feather="send" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Send Money</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="receive.html" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                            <i data-feather="dollar-sign" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Receive Money</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="invest.html" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                            <i data-feather="trending-up" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Investments</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="transactions.html" class="flex items-center p-3 text-gray-700 rounded-lg hover:bg-blue-50 transition">
+                            <i data-feather="list" class="w-5 h-5 mr-3 text-blue-600"></i>
+                            <span class="nav-text">Transactions</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div id="mainContent" class="flex-1 content-expanded">
+            <!-- Top Navigation -->
+            <nav class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
+                <div>
+                    <h1 class="text-xl font-bold text-gray-800">Send Money</h1>
+                </div>
+                <div class="flex items-center space-x-6">
+                    <div class="relative">
+                        <button class="text-gray-500 hover:text-gray-700 transition">
+                            <i data-feather="bell"></i>
+                            <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">3</span>
+                        </button>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                            <i data-feather="user" class="text-blue-600 w-4 h-4"></i>
+                        </div>
+                        <span class="text-gray-700">John Doe</span>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Send Money Content -->
+            <main class="p-6">
+                <div class="max-w-3xl mx-auto">
+                    <div class="bg-white rounded-xl shadow-sm p-6 mb-8">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">New Transfer</h2>
+                        
+                        <!-- Transfer Form -->
+                        <form>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label for="recipient" class="block text-sm font-medium text-gray-700 mb-1">Recipient</label>
+                                    <div class="relative">
+                                        <input type="text" id="recipient" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="Email, phone, or name">
+                                        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                                            <i data-feather="user" class="text-gray-400 w-5 h-5"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="amount" class="block text-sm font-medium text-gray-700 mb-1">Amount</label>
+                                    <div class="relative">
+                                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                                            <span class="text-gray-500">$</span>
+                                        </div>
+                                        <input type="number" id="amount" class="w-full pl-8 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="0.00">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <label for="currency" class="block text-sm font-medium text-gray-700 mb-1">Currency</label>
+                                <select id="currency" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                                    <option>USD - US Dollar</option>
+                                    <option>EUR - Euro</option>
+                                    <option>GBP - British Pound</option>
+                                    <option>JPY - Japanese Yen</option>
+                                    <option>CAD - Canadian Dollar</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-6">
+                                <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Message (Optional)</label>
+                                <textarea id="message" rows="3" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" placeholder="What's this payment for?"></textarea>
+                            </div>
+
+                            <div class="flex justify-between items-center mb-6">
+                                <div>
+                                    <span class="text-sm text-gray-500">Transfer fee:</span>
+                                    <span class="text-sm font-medium">$2.50</span>
+                                </div>
+                                <div>
+                                    <span class="text-sm text-gray-500">Total amount:</span>
+                                    <span class="text-lg font-bold">$102.50</span>
+                                </div>
+                            </div>
+
+                            <div class="flex justify-end">
+                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-medium flex items-center">
+                                    <i data-feather="send" class="w-5 h-5 mr-2"></i>
+                                    Send Money
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Recent Recipients -->
+                    <div class="bg-white rounded-xl shadow-sm p-6">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Recent Recipients</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <a href="#" class="flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition">
+                                <div class="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center mb-2">
+                                    <i data-feather="user" class="text-blue-600"></i>
+                                </div>
+                                <span class="text-sm font-medium">Sarah Johnson</span>
+                                <span class="text-xs text-gray-500">sarah@example.com</span>
+                            </a>
+                            <a href="#" class="flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition">
+                                <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center mb-2">
+                                    <i data-feather="user" class="text-green-600"></i>
+                                </div>
+                                <span class="text-sm font-medium">Mike Brown</span>
+                                <span class="text-xs text-gray-500">+1 (555) 123-4567</span>
+                            </a>
+                            <a href="#" class="flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition">
+                                <div class="w-12 h-12 rounded-full bg-purple-100 flex items-center justify-center mb-2">
+                                    <i data-feather="user" class="text-purple-600"></i>
+                                </div>
+                                <span class="text-sm font-medium">Emma Davis</span>
+                                <span class="text-xs text-gray-500">emma@example.com</span>
+                            </a>
+                            <a href="#" class="flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition">
+                                <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center mb-2">
+                                    <i data-feather="user" class="text-yellow-600"></i>
+                                </div>
+                                <span class="text-sm font-medium">David Wilson</span>
+                                <span class="text-xs text-gray-500">david@example.com</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
